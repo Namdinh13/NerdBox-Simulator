@@ -2,16 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Sittingonchair : MonoBehaviour
-
+public class chair : MonoBehaviour
 {
-
     public GameObject playerStanding, playerSitting, intText, standText;
     public bool interactable, sitting;
 
     void OnTriggerStay(Collider other)
     {
-        if (other.CompareTag("Main Camera"))
+        if (other.CompareTag("MainCamera"))
         {
             intText.SetActive(true);
             interactable = true;
@@ -19,7 +17,7 @@ public class Sittingonchair : MonoBehaviour
     }
     void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Main Camera"))
+        if (other.CompareTag("MainCamera"))
         {
             intText.SetActive(false);
             interactable = false;
