@@ -28,6 +28,7 @@ public class Player : MonoBehaviour
     {
         HandleMovement();
         HandleCamera();
+        HandleInteract();
         
     }
 
@@ -66,6 +67,22 @@ public class Player : MonoBehaviour
         verticalRotation -= lookInput.y;
         verticalRotation = Mathf.Clamp(verticalRotation, -lookRange, lookRange);
         cameraTransform.localRotation = Quaternion.Euler(verticalRotation * mouseSensitivity, cameraTransform.localEulerAngles.y, 0);
+    }
+
+    private void HandleInteract()
+    {
+        Vector3 screenCenter = new Vector3(Screen.width * 0.5f, Screen.height * 0.5f, 0f);
+        Ray ray = Camera.main.ScreenPointToRay(screenCenter);
+
+        Debug.DrawRay(ray.origin, ray.direction * 5f, Color.red);
+
+        if (Physics.Raycast(ray, out RaycastHit hit, 5f) && hit.transform.GetComponent<IInteractable>() != null)
+        {
+            if (Input.GetKeyDown(KeyCode.T))
+            {
+                hit.transform.GetComponent<IInteractable>().Interact();
+            }
+        }
     }
 
 }
