@@ -32,8 +32,7 @@ public class chair : MonoBehaviour
             {
                 intText.SetActive(false);
                 standText.SetActive(true);
-                player.transform.position = seatPoint.position;
-                player.transform.rotation = seatPoint.rotation;
+                player.transform.localPosition = seatPoint.position;
                 sitting = true;
                 interactable = false;
             }
