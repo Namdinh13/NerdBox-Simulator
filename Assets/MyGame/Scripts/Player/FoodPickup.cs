@@ -1,53 +1,63 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class FoodPickup : MonoBehaviour
 {
-    public GameObject player, pickText, eatText;     
-    public AudioSource audioSrc;  
-    public AudioClip eatSound;
-    public Image foodImage;
+    public GameObject player;
+    // tham chiếu gói bim bim
+    public GameObject foodObject;
+
+    public GameObject foodOb;
+
+    public GameObject foodNearUI;
+
     private bool nearShelf = false; 
-    private bool hasFood = false;   
+    private bool hasFood = false;
+
+
+    private void Start()
+    {
+        foodNearUI.SetActive(false);
+    }
 
     void Update()
     {
-      
-        if (nearShelf && !hasFood && Input.GetKeyDown(KeyCode.C))
+        if (Input.GetKeyDown(KeyCode.C) && nearShelf)
         {
-            hasFood = true;
-            foodImage.gameObject.SetActive(true);
-            pickText.SetActive(false);
-            eatText.SetActive(true);
-        }
+            // Sinh ra gói bim bim
+            foodOb = Instantiate(foodObject, Camera.main.transform);
 
-      
-        if (hasFood && Input.GetKeyDown(KeyCode.V))
+            // Đặt vị trí bim bim vào tay
+            foodOb.transform.localPosition = new Vector3(-0.4f, -0.3f, 0.75f);
+            hasFood = true;
+        }
+        
+        if (Input.GetKeyDown(KeyCode.V) && hasFood)
         {
-            hasFood = false;
-            foodImage.gameObject.SetActive(false);
-            pickText.SetActive(false);
-            eatText.SetActive(true);
-            if (audioSrc != null && eatSound != null)
-            {
-                audioSrc.PlayOneShot(eatSound);
-            }
+            // Phá gói bim bim
+            Destroy(foodOb);
         }
     }
 
  
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("snack shelf"))
-            pickText.SetActive(true);
+        Player hoomen = other.GetComponentInParent<Player>();
+        if(hoomen != null)
+        {
+            // Nếu là player tiến gần
             nearShelf = true;
+            foodNearUI.SetActive(true);
+        }
     }
-
-   
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("snack shelf"))
-            pickText.SetActive(false);
+        Player hoomen = other.GetComponentInParent<Player>();
+        if (hoomen != null)
+        {
+            // Nếu là player đi xa
             nearShelf = false;
+            foodNearUI.SetActive(false);
+        }
     }
 }
