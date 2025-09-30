@@ -4,12 +4,13 @@ using UnityEngine;
 
 public class chair : MonoBehaviour
 {
-    public GameObject playerStanding, playerSitting, intText, standText;
+    public GameObject player, intText, standText;
+    public Transform seatPoint, standPoint;
     public bool interactable, sitting;
 
     void OnTriggerStay(Collider other)
     {
-        if (other.CompareTag("MainCamera"))
+        if (other.gameObject == player )
         {
             intText.SetActive(true);
             interactable = true;
@@ -17,7 +18,7 @@ public class chair : MonoBehaviour
     }
     void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("MainCamera"))
+        if (other.gameObject == player )
         {
             intText.SetActive(false);
             interactable = false;
@@ -31,9 +32,9 @@ public class chair : MonoBehaviour
             {
                 intText.SetActive(false);
                 standText.SetActive(true);
-                playerSitting.SetActive(true);
+                player.transform.position = seatPoint.position;
+                player.transform.rotation = seatPoint.rotation;
                 sitting = true;
-                playerStanding.SetActive(false);
                 interactable = false;
             }
         }
@@ -41,9 +42,9 @@ public class chair : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Q))
             {
-                playerSitting.SetActive(false);
+                player.transform.position = standPoint.position;
+                player.transform.rotation = standPoint.rotation;
                 standText.SetActive(false);
-                playerStanding.SetActive(true);
                 sitting = false;
             }
         }
