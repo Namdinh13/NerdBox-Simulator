@@ -10,7 +10,7 @@ public class chair : MonoBehaviour
 
     void OnTriggerStay(Collider other)
     {
-        if (other.gameObject == player )
+        if (other.CompareTag("player") && !sitting)
         {
             intText.SetActive(true);
             interactable = true;
@@ -18,7 +18,7 @@ public class chair : MonoBehaviour
     }
     void OnTriggerExit(Collider other)
     {
-        if (other.gameObject == player )
+        if (other.CompareTag("player"))
         {
             intText.SetActive(false);
             interactable = false;
@@ -34,15 +34,13 @@ public class chair : MonoBehaviour
                 standText.SetActive(true);
                 player.transform.localPosition = seatPoint.position;
                 sitting = true;
-                interactable = false;
             }
         }
         if (sitting == true)
         {
             if (Input.GetKeyDown(KeyCode.N))
             {
-                player.transform.position = standPoint.position;
-                player.transform.rotation = standPoint.rotation;
+                player.transform.localPosition = standPoint.position;
                 standText.SetActive(false);
                 sitting = false;
             }
