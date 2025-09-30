@@ -28,7 +28,7 @@ public class chair : MonoBehaviour
     {
         if (interactable == true)
         {
-            if (Input.GetKeyDown(KeyCode.E))
+            if (Input.GetKeyDown(KeyCode.B))
             {
                 intText.SetActive(false);
                 standText.SetActive(true);
@@ -40,7 +40,7 @@ public class chair : MonoBehaviour
         }
         if (sitting == true)
         {
-            if (Input.GetKeyDown(KeyCode.Q))
+            if (Input.GetKeyDown(KeyCode.N))
             {
                 player.transform.position = standPoint.position;
                 player.transform.rotation = standPoint.rotation;
