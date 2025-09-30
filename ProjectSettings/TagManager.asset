@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 3
   tags:
   - chair
+  - snack shelf
   layers:
   - Default
   - TransparentFX

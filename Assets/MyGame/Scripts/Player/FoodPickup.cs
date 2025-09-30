@@ -3,27 +3,31 @@ using UnityEngine.UI;
 
 public class FoodPickup : MonoBehaviour
 {
-    public GameObject foodUI;     
+    public GameObject player, pickText, eatText;     
     public AudioSource audioSrc;  
-    public AudioClip eatSound;    
-
+    public AudioClip eatSound;
+    public Image foodImage;
     private bool nearShelf = false; 
     private bool hasFood = false;   
 
     void Update()
     {
       
-        if (nearShelf && !hasFood && Input.GetKeyDown(KeyCode.E))
+        if (nearShelf && !hasFood && Input.GetKeyDown(KeyCode.C))
         {
             hasFood = true;
-            foodUI.SetActive(true); 
+            foodImage.gameObject.SetActive(true);
+            pickText.SetActive(false);
+            eatText.SetActive(true);
         }
 
       
-        if (hasFood && Input.GetKeyDown(KeyCode.Q))
+        if (hasFood && Input.GetKeyDown(KeyCode.V))
         {
             hasFood = false;
-            foodUI.SetActive(false); 
+            foodImage.gameObject.SetActive(false);
+            pickText.SetActive(false);
+            eatText.SetActive(true);
             if (audioSrc != null && eatSound != null)
             {
                 audioSrc.PlayOneShot(eatSound);
@@ -34,18 +38,16 @@ public class FoodPickup : MonoBehaviour
  
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("SnackShelf"))
-        {
+        if (other.CompareTag("snack shelf"))
+            pickText.SetActive(true);
             nearShelf = true;
-        }
     }
 
    
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("FoodShelf"))
-        {
+        if (other.CompareTag("snack shelf"))
+            pickText.SetActive(false);
             nearShelf = false;
-        }
     }
 }
