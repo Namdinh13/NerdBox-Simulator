@@ -1,11 +1,14 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class FoodPickup : MonoBehaviour
 {
     public GameObject player;
     // tham chiếu gói bim bim
-    public GameObject foodObject;
+
+    public List<GameObject> bimbims = new List<GameObject>();
 
     public GameObject foodOb;
 
@@ -22,10 +25,14 @@ public class FoodPickup : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.C) && nearShelf)
+        if (Input.GetKeyDown(KeyCode.C) && nearShelf && !hasFood && bimbims.Count > 0)
         {
             // Sinh ra gói bim bim
-            foodOb = Instantiate(foodObject, Camera.main.transform);
+            foodOb = bimbims[bimbims.Count - 1];
+
+            bimbims.Remove(foodOb);
+
+            foodOb.transform.SetParent(Camera.main.transform);
 
             // Đặt vị trí bim bim vào tay
             foodOb.transform.localPosition = new Vector3(-0.4f, -0.3f, 0.75f);
@@ -36,6 +43,7 @@ public class FoodPickup : MonoBehaviour
         {
             // Phá gói bim bim
             Destroy(foodOb);
+            hasFood = false;
         }
     }
 
