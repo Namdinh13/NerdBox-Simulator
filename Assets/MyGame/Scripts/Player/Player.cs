@@ -6,13 +6,15 @@ public class Player : MonoBehaviour
 {
 
     [SerializeField] private float moveSpeed = 7f;
-    //[SerializeField] private float rotateSpeed = 1f;
-
-
     [SerializeField] private Transform cameraTransform;
     [SerializeField] private float mouseSensitivity = 2f;
     [SerializeField] private float lookRange = 80f;
     [SerializeField] private Vector3 cameraOriginPosition;
+
+    [SerializeField] private GameObject interactUI;
+    private IInteractable currentTarget;
+
+
     private float verticalRotation = 0f;
     private Rigidbody rb;
 
@@ -22,6 +24,9 @@ public class Player : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         Cursor.lockState = CursorLockMode.Locked;
         cameraOriginPosition = cameraTransform.localPosition;
+
+        if (interactUI != null ) interactUI.SetActive(false );
+
     }
 
     private void FixedUpdate()
@@ -48,12 +53,8 @@ public class Player : MonoBehaviour
         Vector3 moveDir = (cameraForward * inputDir.z + cameraRight * inputDir.x).normalized * moveSpeed;
         moveDir.y = rb.linearVelocity.y;
 
-        // Di chuyển
-        //transform.position += moveDir * moveSpeed;
-        //rb.AddForce(moveDir * moveSpeed);
         rb.linearVelocity = moveDir;
         cameraTransform.localPosition = cameraOriginPosition;
-        //transform.forward = Vector3.Slerp(transform.forward, moveDir, Time.deltaTime * rotateSpeed);
     }
 
     private void HandleCamera()
@@ -71,18 +72,20 @@ public class Player : MonoBehaviour
 
     private void HandleInteract()
     {
-        Vector3 screenCenter = new Vector3(Screen.width * 0.5f, Screen.height * 0.5f, 0f);
-        Ray ray = Camera.main.ScreenPointToRay(screenCenter);
-
-        Debug.DrawRay(ray.origin, ray.direction * 5f, Color.red);
-
-        if (Physics.Raycast(ray, out RaycastHit hit, 5f) && hit.transform.GetComponent<IInteractable>() != null)
+        Ray ray = new Ray(cameraTransform.position, cameraTransform.forward);
+        if (Physics.Raycast(ray, out RaycastHit hit, 3f))
         {
-            if (Input.GetKeyDown(KeyCode.T))
+            currentTarget = hit.transform.GetComponent<IInteractable>();
+            if (currentTarget != null)
             {
-                hit.transform.GetComponent<IInteractable>().Interact();
+                if (interactUI != null) interactUI.SetActive(true);
+                if (Input.GetKeyDown(KeyCode.E))
+                    currentTarget.Interact();
+                return;
             }
         }
+        currentTarget = null;
+        if (interactUI != null) interactUI.SetActive(false);
     }
 
 }
