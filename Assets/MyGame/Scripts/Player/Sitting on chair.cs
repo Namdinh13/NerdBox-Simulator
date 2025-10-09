@@ -7,7 +7,11 @@ public class chair : MonoBehaviour
     public GameObject Player, intText, standText;
     public Transform seatPoint, standPoint;
     public bool interactable, sitting;
-
+    void Awake()
+    {
+        if (seatPoint == null) seatPoint = transform.Find("Seatpoint");
+        if (standPoint == null) standPoint = transform.Find("Standpoint");
+    }
     void OnTriggerStay(Collider other)
     {
         if (other.gameObject == Player)
@@ -32,7 +36,7 @@ public class chair : MonoBehaviour
             {
                 intText.SetActive(false);
                 standText.SetActive(true);
-                Player.transform.localPosition = seatPoint.position;
+                Player.transform.position = seatPoint.position;
                 sitting = true;
                 interactable = true;
             }
@@ -41,10 +45,11 @@ public class chair : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.N))
             {
-                Player.transform.localPosition = standPoint.position;
+                Player.transform.position = standPoint.position;
                 standText.SetActive(false);
                 sitting = false;
             }
         }
+        
     }
 }
