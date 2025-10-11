@@ -9,7 +9,6 @@ public class FoodPickup : MonoBehaviour, IInteractable
 
     public void Interact()
     {
-        Debug.Log("Hay cam do an len");
         if (!hasFood && bimbims.Count > 0)
         {
             foodInHand = bimbims[bimbims.Count - 1];
