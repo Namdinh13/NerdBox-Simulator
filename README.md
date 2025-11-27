@@ -1,2 +1,2 @@
 # NerdBox_Simulator
-Hiii
+3D simulation of NerdBox study cafe using Unity and Blender, Maya, ...
